@@ -63,4 +63,24 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository.delete(product);
         return product;
     }
+
+    @Override
+    public List<Product> filterProducts(String text, Category category, Manufacturer manufacturer) {
+        if (text != null && category != null && manufacturer != null) {
+            return this.productRepository.findProductsByNameContainingAndCategoryAndManufacturer(text, category, manufacturer);
+        }
+        else if (text != null && category != null) {
+            return this.productRepository.findProductsByNameContainingAndCategory(text, category);
+        }
+        else if (text != null && manufacturer != null) {
+            return this.productRepository.findProductsByNameContainingAndManufacturer(text, manufacturer);
+        }
+        else if (category != null && manufacturer != null) {
+            return this.productRepository.findProductsByCategoryAndManufacturer(category, manufacturer);
+        }
+        else if(text != null) {
+            return this.productRepository.findProductsByNameContaining(text);
+        }
+        else return this.productRepository.findAll();
+    }
 }

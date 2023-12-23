@@ -26,10 +26,29 @@ public class ProductController {
     }
 
     @GetMapping({"/", "/products"})
-    public String showProducts(Model model) {
-        List<Product> products = this.productService.listAllProducts();
+    public String showProducts(@RequestParam(required = false) String searchText,
+                               @RequestParam(required = false) Long category,
+                               @RequestParam(required = false) Long manufacturer,
+                               Model model) {
+        List<Product> products;
+        if (searchText == null && category == null && manufacturer == null) {
+            products = this.productService.listAllProducts();
+        }
+        else {
+            Category searchCategory = null;
+            if (category != null) {
+                searchCategory = this.categoryService.findById(category);
+            }
+            Manufacturer searchManufacturer = null;
+            if (manufacturer != null) {
+                searchManufacturer = this.manufacturerService.findById(manufacturer);
+            }
+            products = this.productService.filterProducts(searchText, searchCategory, searchManufacturer);
+        }
         model.addAttribute("products", products);
-        return "home.html";
+        model.addAttribute("categories", this.categoryService.listAllCategories());
+        model.addAttribute("manufacturers", this.manufacturerService.listAllManufacturers());
+        return "home";
     }
 
     @GetMapping("/products/add")

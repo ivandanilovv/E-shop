@@ -11,6 +11,21 @@
 </head>
 <body>
 <div class="container my-5">
+    <form>
+        <label for="searchText">Keyword: </label>
+        <input type="text" name="searchText" placeholder="Enter keyword here:"/>
+        <label for="category">Category:</label>
+        <select name="category">
+            <option value="">All</option>
+            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+        </select>
+        <label for="manufacturer">Manufacturer:</label>
+        <select name="manufacturer">
+            <option value="">All</option>
+            <option th:each="man : ${manufacturers}" th:value="${man.id}" th:text="${man.name}"></option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
     <a href="/products/add" class="btn btn-primary">Add new product</a>
     <table class="table table-stripped table-hover">
         <thead>

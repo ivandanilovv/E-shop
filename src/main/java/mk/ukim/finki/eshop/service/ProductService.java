@@ -18,4 +18,6 @@ public interface ProductService {
 
     Product delete(Long id);
 
+    List<Product> filterProducts(String text, Category category, Manufacturer manufacturer);
+
 }
